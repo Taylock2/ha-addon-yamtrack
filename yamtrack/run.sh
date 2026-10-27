@@ -29,6 +29,8 @@ BASE_VAL="$(opt base_url)"; BASE_VAL="${BASE_VAL%/}"
 if [ -n "$BASE_VAL" ]; then
     case "$BASE_VAL" in /*) ;; *) BASE_VAL="/$BASE_VAL" ;; esac
     export BASE_URL="$BASE_VAL"
+    # Upstream urljoin()s its absolute default onto BASE_URL, which drops the prefix
+    export ACCOUNT_LOGOUT_REDIRECT_URL="$BASE_VAL/accounts/login/?loggedout=1"
 fi
 
 export PUID=1000

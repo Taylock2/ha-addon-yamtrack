@@ -1,5 +1,5 @@
 name: Yamtrack
-version: "0.1.3"
+version: "0.1.4"
 slug: yamtrack
 description: Self-hosted media tracker with an upcoming-episodes calendar (.ics feed)
 url: https://github.com/FuzzyGrim/Yamtrack
