@@ -1,5 +1,5 @@
 name: Yamtrack
-version: "0.1.8"
+version: "0.1.9"
 slug: yamtrack
 description: Self-hosted media tracker with an upcoming-episodes calendar (.ics feed)
 url: https://github.com/FuzzyGrim/Yamtrack
@@ -14,7 +14,6 @@ ports:
   8000/tcp: 8000
 ports_description:
   8000/tcp: Yamtrack web UI
-webui: "http://[HOST]:[PORT:8000]"
 options:
   secret: ""
   timezone: "UTC"
