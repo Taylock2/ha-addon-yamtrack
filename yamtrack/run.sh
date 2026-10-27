@@ -33,7 +33,6 @@ if [ ! -L /yamtrack/db ]; then
     rm -rf /yamtrack/db
     ln -s /data/db /yamtrack/db
 fi
-chown -R "${PUID}:${PGID}" /data/db
 
 # --- Start Redis locally (cache/task broker only, so no persistence needed) ---
 redis-server --bind 127.0.0.1 --port 6379 --dir /data/redis \
@@ -43,6 +42,14 @@ for i in $(seq 1 20); do
     sleep 0.5
 done
 export REDIS_URL="redis://127.0.0.1:6379"
+
+# --- Migrate as root here, then hand the DB to the app user ---
+# Upstream's entrypoint also migrates as root, but its `chown -R db` doesn't
+# follow our /yamtrack/db symlink, so a fresh db.sqlite3 would stay root-owned
+# and read-only to the app. Its own migrate is then a no-op.
+cd /yamtrack
+python manage.py migrate --noinput
+chown -R "${PUID}:${PGID}" /data/db
 
 # --- Hand over to the upstream Yamtrack entrypoint ---
 exec /entrypoint.sh
