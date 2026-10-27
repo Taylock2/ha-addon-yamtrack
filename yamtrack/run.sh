@@ -24,6 +24,13 @@ URLS_VAL="$(opt urls)";             [ -n "$URLS_VAL" ] && export URLS="$URLS_VAL
 TMDB_VAL="$(opt tmdb_api_key)";     [ -n "$TMDB_VAL" ] && export TMDB_API="$TMDB_VAL"
 REG_VAL="$(opt registration)";      [ -n "$REG_VAL" ] && export REGISTRATION="$REG_VAL"
 
+# Subpath for reverse proxies (e.g. /yamtrack): leading slash, no trailing one
+BASE_VAL="$(opt base_url)"; BASE_VAL="${BASE_VAL%/}"
+if [ -n "$BASE_VAL" ]; then
+    case "$BASE_VAL" in /*) ;; *) BASE_VAL="/$BASE_VAL" ;; esac
+    export BASE_URL="$BASE_VAL"
+fi
+
 export PUID=1000
 export PGID=1000
 
