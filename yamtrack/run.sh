@@ -20,7 +20,9 @@ export SECRET="$SECRET_VAL"
 
 # --- Other options -> Yamtrack environment variables ---
 TZ_VAL="$(opt timezone)";           export TZ="${TZ_VAL:-UTC}"
-URLS_VAL="$(opt urls)";             [ -n "$URLS_VAL" ] && export URLS="$URLS_VAL"
+# urls are CSRF origins and must match exactly: drop any path/trailing slash
+URLS_VAL="$(opt urls | tr ',' '\n' | sed -nE 's#^[[:space:]]*([A-Za-z]+://[^/[:space:]]+).*#\1#p' | tr '\n' ',' | sed 's/,$//')"
+[ -n "$URLS_VAL" ] && export URLS="$URLS_VAL"
 TMDB_VAL="$(opt tmdb_api_key)";     [ -n "$TMDB_VAL" ] && export TMDB_API="$TMDB_VAL"
 REG_VAL="$(opt registration)";      [ -n "$REG_VAL" ] && export REGISTRATION="$REG_VAL"
 
